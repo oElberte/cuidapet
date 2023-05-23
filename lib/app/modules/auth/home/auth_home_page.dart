@@ -1,12 +1,12 @@
-import 'package:cuidapet_mobile/core/ui/extensions/size_screen_extension.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/ui/extensions/size_screen_extension.dart';
 
 class AuthHomePage extends StatelessWidget {
   const AuthHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Center(
         child: Image.asset(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/ui/extensions/size_screen_extension.dart';
+import '../../../core/ui/extensions/size_screen_extension.dart';
 
 class AuthHomePage extends StatelessWidget {
   const AuthHomePage({super.key});

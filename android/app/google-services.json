@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "959407361985",
+    "project_id": "cuidapet-elberte",
+    "storage_bucket": "cuidapet-elberte.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959407361985:android:3cab155fca09ae646b6940",
+        "android_client_info": {
+          "package_name": "com.elberte.cuidapet_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959407361985-p2tamlf8u85ib34v77tgevookg0v43jm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elberte.cuidapet_mobile",
+            "certificate_hash": "d75b8f09141904d37de70ae21e6f55352879524b"
+          }
+        },
+        {
+          "client_id": "959407361985-ntti4o3pasi11ihlsddjiiq6v77jhfbc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbFHAjUg0O3DMt5va-GAZc_hFgauA3a6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959407361985-ntti4o3pasi11ihlsddjiiq6v77jhfbc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

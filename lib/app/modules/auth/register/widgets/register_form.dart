@@ -1,23 +1,16 @@
-part of '../login_page.dart';
+part of '../register_page.dart';
 
-class _LoginForm extends StatefulWidget {
-  const _LoginForm();
+class _RegisterForm extends StatefulWidget {
+  const _RegisterForm();
 
   @override
-  State<_LoginForm> createState() => _LoginFormState();
+  State<_RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<_LoginForm> {
+class _RegisterFormState extends State<_RegisterForm> {
   final formKey = GlobalKey<FormState>();
   final loginEC = TextEditingController();
   final passwordEC = TextEditingController();
-
-  @override
-  void dispose() {
-    loginEC.dispose();
-    passwordEC.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +25,17 @@ class _LoginFormState extends State<_LoginForm> {
           SizedBox(height: 20.h),
           CuidapetTextFormField(
             label: 'Senha',
-            obscureText: true,
             controller: passwordEC,
+            obscureText: true,
+          ),
+          SizedBox(height: 20.h),
+          CuidapetTextFormField(
+            label: 'Confirmar senha',
+            obscureText: true,
           ),
           SizedBox(height: 20.h),
           CuidapetDefaultButton(
-            label: 'Entrar',
+            label: 'Cadastrar',
             onPressed: () {},
           ),
         ],

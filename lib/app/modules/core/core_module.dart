@@ -1,7 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../core/local_storage/flutter_secure_storage/flutter_secure_storage_local_secure_storage_impl.dart';
 import '../../core/local_storage/local_storage.dart';
-import '../../core/local_storage/shared_preferences_local_storage_impl.dart';
+import '../../core/local_storage/shared_preferences/shared_preferences_local_storage_impl.dart';
 import '../../core/logger/app_logger.dart';
 import '../../core/logger/logger_app_logger_impl.dart';
 import '../../core/rest_client/dio/dio_rest_client.dart';
@@ -25,6 +26,10 @@ class CoreModule extends Module {
         ),
         Bind.lazySingleton<LocalStorage>(
           (i) => SharedPreferencesLocalStorageImpl(),
+          export: true,
+        ),
+        Bind.lazySingleton<LocalSecureStorage>(
+          (i) => FlutterSecureStorageLocalStorageImpl(),
           export: true,
         ),
       ];

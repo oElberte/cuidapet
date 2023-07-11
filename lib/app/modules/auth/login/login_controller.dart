@@ -49,6 +49,7 @@ abstract class LoginControllerBase with Store {
       Loader.show();
       await _userService.socialLogin(socialLoginType);
       Loader.hide();
+      Modular.to.navigate('/auth/');
     } on Failure catch (e, s) {
       final errorMessage = e.message ?? 'Erro ao realizar login';
       _log.error(errorMessage, e, s);

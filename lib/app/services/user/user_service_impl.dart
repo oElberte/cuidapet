@@ -90,30 +90,40 @@ class UserServiceImpl extends UserService {
 
   @override
   Future<void> socialLogin(SocialLoginType socialLoginType) async {
-    final SocialNetworkModel socialModel;
-    final AuthCredential authCredential;
-    final firebaseAuth = FirebaseAuth.instance;
+    try {
+      final SocialNetworkModel socialModel;
+      final AuthCredential authCredential;
+      final firebaseAuth = FirebaseAuth.instance;
 
-    switch (socialLoginType) {
-      case SocialLoginType.facebook:
-        throw Failure(message: 'Facebook not implemented');
-      case SocialLoginType.google:
-        socialModel = await _socialRepository.googleLogin();
-        authCredential = GoogleAuthProvider.credential(
-          accessToken: socialModel.accessToken,
-          idToken: socialModel.id,
-        );
-        break;
+      switch (socialLoginType) {
+        case SocialLoginType.facebook:
+          throw Failure(message: 'Facebook not implemented');
+        case SocialLoginType.google:
+          socialModel = await _socialRepository.googleLogin();
+          authCredential = GoogleAuthProvider.credential(
+            accessToken: socialModel.accessToken,
+            idToken: socialModel.id,
+          );
+          break;
+      }
+
+      final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(socialModel.email);
+      final methodUrl = _getMethodToSocialLoginType(socialLoginType)['methodUrl'];
+      final methodName = _getMethodToSocialLoginType(socialLoginType)['methodName'];
+
+      if (userMethods.isNotEmpty && !userMethods.contains(methodUrl)) {
+        throw Failure(message: 'Login não pode ser feito por $methodName, por favor utilize outro método');
+      }
+
+      await firebaseAuth.signInWithCredential(authCredential);
+      final accessToken = await _userRepository.socialLogin(socialModel);
+      await _saveAccessToken(accessToken);
+      await _confirmLogin();
+      await _getUserData();
+    } on FirebaseAuthException catch (e, s) {
+      _log.error('Erro ao realizar login com $socialLoginType', e, s);
+      throw Failure(message: 'Erro ao realizar login');
     }
-
-    final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(socialModel.email);
-    final method = _getMethodToSocialLoginType(socialLoginType);
-
-    if (userMethods.isNotEmpty && !userMethods.contains(method)) {
-      throw Failure(message: 'Login não pode ser feito por $method, por favor utilize outro método');
-    }
-
-    await firebaseAuth.signInWithCredential(authCredential);
   }
 
   Future<void> _saveAccessToken(String accessToken) async {
@@ -131,12 +141,18 @@ class UserServiceImpl extends UserService {
     await _localStorage.write<String>(Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toJson());
   }
 
-  String _getMethodToSocialLoginType(SocialLoginType socialLoginType) {
+  Map<String, String> _getMethodToSocialLoginType(SocialLoginType socialLoginType) {
     switch (socialLoginType) {
       case SocialLoginType.facebook:
-        return 'facebook.com';
+        return {
+          'methodUrl': 'facebook.com',
+          'methodName': 'Facebook',
+        };
       case SocialLoginType.google:
-        return 'google.com';
+        return {
+          'methodUrl': 'google.com',
+          'methodName': 'Google',
+        };
     }
   }
 }

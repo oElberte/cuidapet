@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../modules/core/auth/auth_store.dart';
 import '../../../helpers/constants.dart';

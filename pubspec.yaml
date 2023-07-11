@@ -22,9 +22,11 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_remote_config: ^4.2.3
   firebase_analytics: ^10.4.3
+  firebase_auth: ^4.6.3
   logger: ^1.4.0
   flutter_secure_storage: ^8.0.0
   shared_preferences: ^2.2.0
+  validatorless: ^1.2.3
 
 dev_dependencies:
   flutter_test:

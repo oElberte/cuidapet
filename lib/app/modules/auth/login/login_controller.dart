@@ -1,3 +1,4 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../core/exceptions/failure.dart';
@@ -21,11 +22,13 @@ abstract class LoginControllerBase with Store {
   })  : _userService = userService,
         _log = log;
 
+  @action
   Future<void> login(String email, String password) async {
     try {
       Loader.show();
       await _userService.login(email, password);
       Loader.hide();
+      Modular.to.navigate('/auth/');
     } on Failure catch (e, s) {
       final errorMessage = e.message ?? 'Erro ao realizar login';
       _log.error(errorMessage, e, s);

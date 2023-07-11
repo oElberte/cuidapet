@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../../modules/core/auth/auth_store.dart';
 import '../../helpers/constants.dart';
 import '../../helpers/environments.dart';
 import '../../local_storage/local_storage.dart';
@@ -25,11 +26,12 @@ class DioRestClient implements RestClient {
   DioRestClient({
     required LocalStorage localStorage,
     required AppLogger log,
+    required AuthStore authStore,
     BaseOptions? baseOptions,
   }) {
     _dio = Dio(baseOptions ?? _defaultOptions);
     _dio.interceptors.addAll([
-      AuthInterceptor(localStorage: localStorage, log: log),
+      AuthInterceptor(localStorage: localStorage, log: log, authStore: authStore),
       LogInterceptor(requestBody: true, responseBody: true),
     ]);
   }

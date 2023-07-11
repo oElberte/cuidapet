@@ -6,6 +6,9 @@ import '../../core/exceptions/user_not_exists_exception.dart';
 import '../../core/helpers/constants.dart';
 import '../../core/local_storage/local_storage.dart';
 import '../../core/logger/app_logger.dart';
+import '../../models/social_login_type.dart';
+import '../../models/social_network_model.dart';
+import '../../repositories/social/social_repository.dart';
 import '../../repositories/user/user_repository.dart';
 import './user_service.dart';
 
@@ -14,16 +17,19 @@ class UserServiceImpl extends UserService {
   final AppLogger _log;
   final LocalStorage _localStorage;
   final LocalSecureStorage _localSecureStorage;
+  final SocialRepository _socialRepository;
 
   UserServiceImpl({
     required UserRepository userRepository,
     required AppLogger log,
     required LocalStorage localStorage,
     required LocalSecureStorage localSecureStorage,
+    required SocialRepository socialRepository,
   })  : _log = log,
         _userRepository = userRepository,
         _localStorage = localStorage,
-        _localSecureStorage = localSecureStorage;
+        _localSecureStorage = localSecureStorage,
+        _socialRepository = socialRepository;
 
   @override
   Future<void> register(String email, String password) async {
@@ -82,6 +88,34 @@ class UserServiceImpl extends UserService {
     }
   }
 
+  @override
+  Future<void> socialLogin(SocialLoginType socialLoginType) async {
+    final SocialNetworkModel socialModel;
+    final AuthCredential authCredential;
+    final firebaseAuth = FirebaseAuth.instance;
+
+    switch (socialLoginType) {
+      case SocialLoginType.facebook:
+        throw Failure(message: 'Facebook not implemented');
+      case SocialLoginType.google:
+        socialModel = await _socialRepository.googleLogin();
+        authCredential = GoogleAuthProvider.credential(
+          accessToken: socialModel.accessToken,
+          idToken: socialModel.id,
+        );
+        break;
+    }
+
+    final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(socialModel.email);
+    final method = _getMethodToSocialLoginType(socialLoginType);
+
+    if (userMethods.isNotEmpty && !userMethods.contains(method)) {
+      throw Failure(message: 'Login não pode ser feito por $method, por favor utilize outro método');
+    }
+
+    await firebaseAuth.signInWithCredential(authCredential);
+  }
+
   Future<void> _saveAccessToken(String accessToken) async {
     await _localStorage.write<String>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, accessToken);
   }
@@ -91,9 +125,18 @@ class UserServiceImpl extends UserService {
     await _saveAccessToken(confirmLoginModel.accessToken);
     await _localSecureStorage.write(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY, confirmLoginModel.refreshToken);
   }
-  
+
   Future<void> _getUserData() async {
     final userModel = await _userRepository.getUserLogged();
     await _localStorage.write<String>(Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toJson());
+  }
+
+  String _getMethodToSocialLoginType(SocialLoginType socialLoginType) {
+    switch (socialLoginType) {
+      case SocialLoginType.facebook:
+        return 'facebook.com';
+      case SocialLoginType.google:
+        return 'google.com';
+    }
   }
 }

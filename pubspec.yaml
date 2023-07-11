@@ -23,6 +23,7 @@ dependencies:
   firebase_remote_config: ^4.2.3
   firebase_analytics: ^10.4.3
   firebase_auth: ^4.6.3
+  firebase_messaging: ^14.6.4
   logger: ^1.4.0
   flutter_secure_storage: ^8.0.0
   shared_preferences: ^2.2.0

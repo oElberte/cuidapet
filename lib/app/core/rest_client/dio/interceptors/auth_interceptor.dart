@@ -3,19 +3,15 @@ import 'package:dio/dio.dart';
 import '../../../../modules/core/auth/auth_store.dart';
 import '../../../helpers/constants.dart';
 import '../../../local_storage/local_storage.dart';
-import '../../../logger/app_logger.dart';
 
 class AuthInterceptor extends Interceptor {
   final LocalStorage _localStorage;
-  final AppLogger _log;
   final AuthStore _authStore;
 
   AuthInterceptor({
     required LocalStorage localStorage,
-    required AppLogger log,
     required AuthStore authStore,
   })  : _localStorage = localStorage,
-        _log = log,
         _authStore = authStore;
 
   @override
@@ -43,16 +39,4 @@ class AuthInterceptor extends Interceptor {
 
     handler.next(options);
   }
-
-  // @override
-  // void onResponse(Response response, ResponseInterceptorHandler handler) {
-  //   // TODO: implement onResponse
-  //   super.onResponse(response, handler);
-  // }
-
-  // @override
-  // void onError(DioException err, ErrorInterceptorHandler handler) {
-  //   // TODO: implement onError
-  //   super.onError(err, handler);
-  // }
 }

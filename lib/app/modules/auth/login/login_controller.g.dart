@@ -17,6 +17,15 @@ mixin _$LoginController on LoginControllerBase, Store {
     return _$loginAsyncAction.run(() => super.login(email, password));
   }
 
+  late final _$socialLoginAsyncAction =
+      AsyncAction('LoginControllerBase.socialLogin', context: context);
+
+  @override
+  Future<void> socialLogin(SocialLoginType socialLoginType) {
+    return _$socialLoginAsyncAction
+        .run(() => super.socialLogin(socialLoginType));
+  }
+
   @override
   String toString() {
     return '''

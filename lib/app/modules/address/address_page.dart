@@ -20,7 +20,6 @@ class AddressPage extends StatefulWidget {
 class _AddressPageState extends State<AddressPage> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -41,11 +40,11 @@ class _AddressPageState extends State<AddressPage> {
                 ),
               ),
               const SizedBox(height: 20),
-               _AddressSearchWidget(
+              _AddressSearchWidget(
                 addressSelectedCallback: (place) {
                   Modular.to.pushNamed('/address/details/', arguments: place);
                 },
-               ),
+              ),
               const SizedBox(height: 30),
               const ListTile(
                 leading: CircleAvatar(

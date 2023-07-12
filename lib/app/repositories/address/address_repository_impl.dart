@@ -27,7 +27,7 @@ class AddressRepositoryImpl extends AddressRepository {
         return PlaceModel(
           address: address ?? '',
           lat: location?.lat ?? 0,
-          lgn: location?.lng ?? 0,
+          lng: location?.lng ?? 0,
         );
       }).toList();
     }

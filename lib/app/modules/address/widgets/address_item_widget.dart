@@ -1,7 +1,7 @@
 part of '../address_page.dart';
 
-class _AddressItem extends StatelessWidget {
-  const _AddressItem({Key? key}) : super(key: key);
+class _AddressItemWidget extends StatelessWidget {
+  const _AddressItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

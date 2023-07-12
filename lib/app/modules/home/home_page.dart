@@ -24,13 +24,13 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
         child: Column(
           children: [
             TextButton(
-              child: Text('Logout'),
+              child: const Text('Logout'),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
               },
             ),
             TextButton(
-              child: Text('Refresh Token'),
+              child: const Text('Refresh Token'),
               onPressed: () async {
                 final categoriesResponse = await Modular.get<RestClient>().auth().get('/categories/');
                 print(categoriesResponse.data);

@@ -44,9 +44,9 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
 
   FutureOr<Iterable<PlaceModel>> _suggestionsCallback(pattern) {
     return [
-      PlaceModel(address: 'Av Paulist, 200', lat: 123.0, lon: 1212.3),
-      PlaceModel(address: 'Av Paulist, 500', lat: 123.0, lon: 1212.3),
-      PlaceModel(address: 'Av Paulist, 1500', lat: 123.0, lon: 1212.3),
+      PlaceModel(address: 'Av Paulist, 200', lat: 123.0, lgn: 1212.3),
+      PlaceModel(address: 'Av Paulist, 500', lat: 123.0, lgn: 1212.3),
+      PlaceModel(address: 'Av Paulist, 1500', lat: 123.0, lgn: 1212.3),
     ];
   }
 

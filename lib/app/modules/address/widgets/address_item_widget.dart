@@ -1,14 +1,16 @@
 part of '../address_page.dart';
 
 class _AddressItemWidget extends StatelessWidget {
-  const _AddressItemWidget({Key? key}) : super(key: key);
+  final AddressEntity entity;
+
+  const _AddressItemWidget({required this.entity});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
-      child: const ListTile(
-        leading: CircleAvatar(
+      child:  ListTile(
+        leading: const CircleAvatar(
           radius: 30,
           backgroundColor: Colors.white,
           child: Icon(
@@ -16,8 +18,8 @@ class _AddressItemWidget extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        title: Text('Av Paulista, 200'),
-        subtitle: Text('Complemento XX'),
+        title: Text(entity.address),
+        subtitle: Text(entity.additional),
       ),
     );
   }

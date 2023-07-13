@@ -65,6 +65,24 @@ mixin _$AddressController on AddressControllerBase, Store {
     });
   }
 
+  late final _$_placeModelAtom =
+      Atom(name: 'AddressControllerBase._placeModel', context: context);
+
+  PlaceModel? get placeModel {
+    _$_placeModelAtom.reportRead();
+    return super._placeModel;
+  }
+
+  @override
+  PlaceModel? get _placeModel => placeModel;
+
+  @override
+  set _placeModel(PlaceModel? value) {
+    _$_placeModelAtom.reportWrite(value, super._placeModel, () {
+      super._placeModel = value;
+    });
+  }
+
   late final _$getAddressesAsyncAction =
       AsyncAction('AddressControllerBase.getAddresses', context: context);
 

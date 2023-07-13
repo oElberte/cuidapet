@@ -5,6 +5,7 @@ import '../../core/life_cycle/page_life_cycle_state.dart';
 import '../../core/ui/extensions/size_screen_extension.dart';
 import '../../core/ui/extensions/theme_extension.dart';
 import '../../entities/address_entity.dart';
+import '../../models/supplier_category_model.dart';
 import 'home_controller.dart';
 import 'widgets/home_app_bar.dart';
 
@@ -31,10 +32,10 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
           return [
             HomeAppBar(controller),
             SliverToBoxAdapter(
-              child: _HomeAddressWidget(controller: controller),
+              child: _HomeAddressWidget(controller),
             ),
-            const SliverToBoxAdapter(
-              child: _HomeCategoriesWidget(),
+            SliverToBoxAdapter(
+              child: _HomeCategoriesWidget(controller),
             ),
           ];
         },

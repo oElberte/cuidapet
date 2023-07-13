@@ -27,6 +27,24 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
+  late final _$_categoriesAtom =
+      Atom(name: 'HomeControllerBase._categories', context: context);
+
+  List<SupplierCategoryModel> get categories {
+    _$_categoriesAtom.reportRead();
+    return super._categories;
+  }
+
+  @override
+  List<SupplierCategoryModel> get _categories => categories;
+
+  @override
+  set _categories(List<SupplierCategoryModel> value) {
+    _$_categoriesAtom.reportWrite(value, super._categories, () {
+      super._categories = value;
+    });
+  }
+
   late final _$_getAddressSelectedAsyncAction =
       AsyncAction('HomeControllerBase._getAddressSelected', context: context);
 
@@ -42,6 +60,14 @@ mixin _$HomeController on HomeControllerBase, Store {
   @override
   Future<void> goToAddressPage() {
     return _$goToAddressPageAsyncAction.run(() => super.goToAddressPage());
+  }
+
+  late final _$_getCategoriesAsyncAction =
+      AsyncAction('HomeControllerBase._getCategories', context: context);
+
+  @override
+  Future<void> _getCategories() {
+    return _$_getCategoriesAsyncAction.run(() => super._getCategories());
   }
 
   @override

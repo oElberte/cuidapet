@@ -3,7 +3,7 @@ part of '../home_page.dart';
 class _HomeAddressWidget extends StatelessWidget {
   final HomeController controller;
 
-  const _HomeAddressWidget({required this.controller});
+  const _HomeAddressWidget(this.controller);
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,9 @@ class HomeModule extends Module {
   @override
   List<Bind> get binds => [
         Bind.lazySingleton(
-          (i) => HomeController(),
+          (i) => HomeController(
+            addressService: i(),
+          ),
         ),
       ];
 

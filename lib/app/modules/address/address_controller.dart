@@ -111,6 +111,6 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
 
   Future<void> selectAddress(AddressEntity addressEntity) async {
     await _addressService.selectAddress(addressEntity);
-    Modular.to.pop();
+    Modular.to.pop(addressEntity);
   }
 }

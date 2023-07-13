@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../core/life_cycle/page_life_cycle_state.dart';
@@ -35,7 +36,7 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
             TextButton(
               child: const Text('Ir para endereço'),
               onPressed: () async {
-                await Modular.to.pushNamed('/address/');
+                controller.goToAddressPage();
               },
             ),
             TextButton(
@@ -47,8 +48,16 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
                 });
               },
             ),
-            Text(addressEntity?.address ?? 'Nenhum endereço selecionado'),
-            Text(addressEntity?.additional ?? 'Nenhum complemento selecionado'),
+            Observer(
+              builder: (_) {
+                return Text(controller.addressEntity?.address ?? 'Nenhum endereço selecionado');
+              },
+            ),
+            Observer(
+              builder: (_) {
+                return Text(controller.addressEntity?.additional ?? 'Nenhum complemento selecionado');
+              },
+            ),
           ],
         ),
       ),

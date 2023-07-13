@@ -5,6 +5,7 @@ import 'package:mobx/mobx.dart';
 
 import '../../core/life_cycle/controller_life_cycle.dart';
 import '../../core/ui/widgets/loader.dart';
+import '../../core/ui/widgets/messages.dart';
 import '../../entities/address_entity.dart';
 import '../../models/place_model.dart';
 import '../../services/address/address_service.dart';
@@ -112,5 +113,16 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
   Future<void> selectAddress(AddressEntity addressEntity) async {
     await _addressService.selectAddress(addressEntity);
     Modular.to.pop(addressEntity);
+  }
+
+  Future<bool> addressWasSelected() async {
+    final address = await _addressService.getAddressSelected();
+
+    if (address != null) {
+      return true;
+    } else {
+      Messages.alert('Por favor selecione ou cadastre um endereço');
+      return false;
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 import '../../../core/helpers/constants.dart';
 import '../../../core/local_storage/local_storage.dart';
 import '../../../models/user_model.dart';
+import '../../../services/address/address_service.dart';
 
 part 'auth_store.g.dart';
 
@@ -11,13 +12,19 @@ class AuthStore = AuthStoreBase with _$AuthStore;
 
 abstract class AuthStoreBase with Store {
   final LocalStorage _localStorage;
+  final LocalSecureStorage _localSecureStorage;
+  final AddressService _addressService;
 
   @readonly //Creates a get of this attribute
   UserModel? _userLogged;
 
   AuthStoreBase({
     required LocalStorage localStorage,
-  }) : _localStorage = localStorage;
+    required LocalSecureStorage localSecureStorage,
+    required AddressService addressService,
+  })  : _localStorage = localStorage,
+        _localSecureStorage = localSecureStorage,
+        _addressService = addressService;
 
   @action
   Future<void> loadUserLogged() async {
@@ -39,6 +46,8 @@ abstract class AuthStoreBase with Store {
   @action
   Future<void> logout() async {
     await _localStorage.clear();
+    await _localSecureStorage.clear();
+    await _addressService.deleteAll();
     _userLogged = UserModel.empty();
   }
 }

@@ -33,9 +33,18 @@ class CoreModule extends Module {
           (i) => LoggerAppLoggerImpl(),
           export: true,
         ),
+        Bind.lazySingleton<AddressService>(
+          (i) => AddressServiceImpl(
+            addressRepository: i(),
+            localStorage: i(),
+          ),
+          export: true,
+        ),
         Bind.lazySingleton<AuthStore>(
           (i) => AuthStore(
             localStorage: i(),
+            localSecureStorage: i(),
+            addressService: i(),
           ),
           export: true,
         ),
@@ -51,13 +60,6 @@ class CoreModule extends Module {
         Bind.lazySingleton<AddressRepository>(
           (i) => AddressRepositoryImpl(
             sqliteConnectionFactory: i(),
-          ),
-          export: true,
-        ),
-        Bind.lazySingleton<AddressService>(
-          (i) => AddressServiceImpl(
-            addressRepository: i(),
-            localStorage: i(),
           ),
           export: true,
         ),

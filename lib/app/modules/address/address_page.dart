@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../core/life_cycle/page_life_cycle_state.dart';
+import '../../core/mixins/location_mixin.dart';
 import '../../core/ui/extensions/theme_extension.dart';
 import '../../entities/address_entity.dart';
 import '../../models/place_model.dart';
@@ -22,7 +25,44 @@ class AddressPage extends StatefulWidget {
   State<AddressPage> createState() => _AddressPageState();
 }
 
-class _AddressPageState extends PageLifeCycleState<AddressController, AddressPage> {
+class _AddressPageState extends PageLifeCycleState<AddressController, AddressPage> with LocationMixin {
+  final reactionDisposer = <ReactionDisposer>[];
+
+  @override
+  void initState() {
+    super.initState();
+    final reactionService = reaction<bool>(
+      (_) => controller.locationServiceUnavailable,
+      (locationServiceUnavailable) {
+        if (locationServiceUnavailable) {
+          showDialogLocationServiceUnavailable();
+        }
+      },
+    );
+
+    final reactionLocationPerm = reaction<LocationPermission?>(
+      (_) => controller.locationPermission,
+      (locationPermission) {
+        if (locationPermission != null && locationPermission == LocationPermission.denied) {
+          showDialogLocationDenied(tryAgain: () => controller.getMyLocation());
+        } else if (locationPermission != null && locationPermission == LocationPermission.deniedForever) {
+          showDialogLocationDeniedForever();
+        }
+      },
+    );
+
+    reactionDisposer.addAll([reactionService, reactionLocationPerm]);
+  }
+
+  @override
+  void dispose() {
+    for (var reaction in reactionDisposer) {
+      reaction();
+    }
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -45,6 +45,25 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
+  late final _$_supplierPageTypeSelectedAtom = Atom(
+      name: 'HomeControllerBase._supplierPageTypeSelected', context: context);
+
+  SupplierPageType get supplierPageTypeSelected {
+    _$_supplierPageTypeSelectedAtom.reportRead();
+    return super._supplierPageTypeSelected;
+  }
+
+  @override
+  SupplierPageType get _supplierPageTypeSelected => supplierPageTypeSelected;
+
+  @override
+  set _supplierPageTypeSelected(SupplierPageType value) {
+    _$_supplierPageTypeSelectedAtom
+        .reportWrite(value, super._supplierPageTypeSelected, () {
+      super._supplierPageTypeSelected = value;
+    });
+  }
+
   late final _$_getAddressSelectedAsyncAction =
       AsyncAction('HomeControllerBase._getAddressSelected', context: context);
 
@@ -68,6 +87,20 @@ mixin _$HomeController on HomeControllerBase, Store {
   @override
   Future<void> _getCategories() {
     return _$_getCategoriesAsyncAction.run(() => super._getCategories());
+  }
+
+  late final _$HomeControllerBaseActionController =
+      ActionController(name: 'HomeControllerBase', context: context);
+
+  @override
+  void changePageType(SupplierPageType supplierPageType) {
+    final _$actionInfo = _$HomeControllerBaseActionController.startAction(
+        name: 'HomeControllerBase.changePageType');
+    try {
+      return super.changePageType(supplierPageType);
+    } finally {
+      _$HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

@@ -12,6 +12,7 @@ class Constants {
   static const LOCAL_STORAGE_ACCESS_TOKEN_KEY = '/access_token/';
   static const LOCAL_STORAGE_REFRESH_TOKEN_KEY = '/refresh_token/';
   static const LOCAL_STORAGE_USER_LOGGED_DATA_KEY = '/user/';
+  static const LOCAL_STORAGE_DEFAULT_ADDRESS_DATA_KEY = '/address/';
 
   static const REST_CLIENT_AUTH_REQUIRED_KEY = 'auth_required';
 }

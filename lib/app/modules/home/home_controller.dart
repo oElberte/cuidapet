@@ -1,4 +1,3 @@
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../core/life_cycle/controller_life_cycle.dart';
@@ -13,6 +12,6 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   }
   
   Future<void> _hasRegisteredAddress() async {
-    await Modular.to.pushNamed('/address/');
+    
   }
 }

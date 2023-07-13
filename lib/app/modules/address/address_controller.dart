@@ -101,7 +101,16 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
     final address = await Modular.to.pushNamed('/address/details/', arguments: place);
 
     if (address is PlaceModel) {
+      // Editou um endereço
       _placeModel = address;
+    } else if (address is AddressEntity) {
+      // Salvou um endereço
+      selectAddress(address);
     }
+  }
+
+  Future<void> selectAddress(AddressEntity addressEntity) async {
+    await _addressService.selectAddress(addressEntity);
+    Modular.to.pop();
   }
 }

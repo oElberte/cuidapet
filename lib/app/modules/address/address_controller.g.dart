@@ -27,12 +27,58 @@ mixin _$AddressController on AddressControllerBase, Store {
     });
   }
 
+  late final _$_locationServiceUnavailableAtom = Atom(
+      name: 'AddressControllerBase._locationServiceUnavailable',
+      context: context);
+
+  bool get locationServiceUnavailable {
+    _$_locationServiceUnavailableAtom.reportRead();
+    return super._locationServiceUnavailable;
+  }
+
+  @override
+  bool get _locationServiceUnavailable => locationServiceUnavailable;
+
+  @override
+  set _locationServiceUnavailable(bool value) {
+    _$_locationServiceUnavailableAtom
+        .reportWrite(value, super._locationServiceUnavailable, () {
+      super._locationServiceUnavailable = value;
+    });
+  }
+
+  late final _$_locationPermissionAtom =
+      Atom(name: 'AddressControllerBase._locationPermission', context: context);
+
+  LocationPermission? get locationPermission {
+    _$_locationPermissionAtom.reportRead();
+    return super._locationPermission;
+  }
+
+  @override
+  LocationPermission? get _locationPermission => locationPermission;
+
+  @override
+  set _locationPermission(LocationPermission? value) {
+    _$_locationPermissionAtom.reportWrite(value, super._locationPermission, () {
+      super._locationPermission = value;
+    });
+  }
+
   late final _$getAddressesAsyncAction =
       AsyncAction('AddressControllerBase.getAddresses', context: context);
 
   @override
   Future<void> getAddresses() {
     return _$getAddressesAsyncAction.run(() => super.getAddresses());
+  }
+
+  late final _$getMyLocationAsyncAction =
+      AsyncAction('AddressControllerBase.getMyLocation', context: context);
+
+  @override
+  Future<void> getMyLocation() {
+    return _$getMyLocationAsyncAction.run(() => super.getMyLocation());
   }
 
   @override

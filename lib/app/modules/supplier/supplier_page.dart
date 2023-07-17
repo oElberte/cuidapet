@@ -13,7 +13,7 @@ class SupplierPage extends StatefulWidget {
 
 class _SupplierPageState extends State<SupplierPage> {
   late ScrollController _scrollController;
-  bool sliverCollapsed = false;
+  final sliverCollapsedVN = ValueNotifier(false);
 
   @override
   void initState() {
@@ -21,13 +21,9 @@ class _SupplierPageState extends State<SupplierPage> {
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.offset > 180 && !_scrollController.position.outOfRange) {
-        setState(() {
-          sliverCollapsed = true;
-        });
+        sliverCollapsedVN.value = true;
       } else if (_scrollController.offset <= 180 && !_scrollController.position.outOfRange) {
-        setState(() {
-          sliverCollapsed = false;
-        });
+        sliverCollapsedVN.value = false;
       }
     });
   }
@@ -54,9 +50,14 @@ class _SupplierPageState extends State<SupplierPage> {
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
-            title: Visibility(
-              visible: sliverCollapsed,
-              child: const Text('Clinica Central ABC'),
+            title: ValueListenableBuilder(
+              valueListenable: sliverCollapsedVN,
+              builder: (_, sliverCollapsedVNValue, child) {
+                return Visibility(
+                  visible: sliverCollapsedVNValue,
+                  child: const Text('Clinica Central ABC'),
+                );
+              },
             ),
             flexibleSpace: FlexibleSpaceBar(
               stretchModes: const [

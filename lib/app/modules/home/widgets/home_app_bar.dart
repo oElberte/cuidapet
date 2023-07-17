@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/helpers/debouncer.dart';
 import '../../../core/ui/extensions/size_screen_extension.dart';
 import '../../../core/ui/extensions/theme_extension.dart';
 import '../home_controller.dart';
@@ -27,6 +28,8 @@ class _CuidapetAppBar extends StatelessWidget {
       borderRadius: BorderRadius.circular(30),
       borderSide: BorderSide(color: Colors.grey[200]!),
     );
+
+    final debouncer = Debouncer(milliseconds: 600);
 
     return AppBar(
       backgroundColor: Colors.grey[100],
@@ -58,6 +61,9 @@ class _CuidapetAppBar extends StatelessWidget {
                 elevation: 4,
                 borderRadius: BorderRadius.circular(30),
                 child: TextFormField(
+                  onChanged: (name) {
+                    debouncer.run(() => controller.filterSupplierByName(name));
+                  },
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,

@@ -35,6 +35,15 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   @readonly
   var _listSuppliersByAddress = <SupplierNearByMeModel>[];
 
+  @readonly
+  var _listSuppliersByAddressCache = <SupplierNearByMeModel>[];
+
+  @readonly
+  var _nameSearchText = '';
+
+  @readonly
+  SupplierCategoryModel? _supplierCategoryFilterSelected;
+
   late ReactionDisposer nearByReactionDisposer;
 
   HomeControllerBase({
@@ -47,7 +56,7 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   void onInit([Map<String, dynamic>? params]) {
     nearByReactionDisposer = reaction((_) => _addressEntity, (address) {
       _getNearBy();
-     });
+    });
   }
 
   @override
@@ -101,6 +110,8 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
       if (_addressEntity != null) {
         final suppliers = await _supplierService.findNearBy(_addressEntity!);
         _listSuppliersByAddress = [...suppliers];
+        _listSuppliersByAddressCache = [...suppliers];
+        _filterSupplier();
       } else {
         Messages.alert('Para realizar a busca por petshops, você precisa selecionar um endereço');
       }
@@ -108,6 +119,45 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
       Messages.alert('Erro ao buscar as petshops');
       throw Exception();
     }
+  }
+
+  @action
+  void filterSupplierCategory(SupplierCategoryModel category) {
+    if (_supplierCategoryFilterSelected == category) {
+      _supplierCategoryFilterSelected = null;
+    } else {
+      _supplierCategoryFilterSelected = category;
+    }
+    _filterSupplier();
+  }
+
+  @action
+  void filterSupplierByName(String name) {
+    _nameSearchText = name;
+    _filterSupplier();
+  }
+
+  @action
+  void _filterSupplier() {
+    var suppliers = [..._listSuppliersByAddressCache];
+
+    if (_supplierCategoryFilterSelected != null) {
+      suppliers = suppliers
+          .where(
+            (supplier) => supplier.category == _supplierCategoryFilterSelected?.id,
+          )
+          .toList();
+    }
+
+    if (_nameSearchText.isNotEmpty) {
+      suppliers = suppliers
+          .where(
+            (supplier) => supplier.name.toLowerCase().contains(_nameSearchText.toLowerCase()),
+          )
+          .toList();
+    }
+
+    _listSuppliersByAddress = [...suppliers];
   }
 
   @action

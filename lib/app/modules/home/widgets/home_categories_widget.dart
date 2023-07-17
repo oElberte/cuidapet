@@ -17,7 +17,7 @@ class _HomeCategoriesWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: controller.categories.length,
               itemBuilder: (context, index) {
-                return _CategoryItem(controller.categories[index]);
+                return _CategoryItem(controller.categories[index], controller);
               },
             ),
           );
@@ -29,6 +29,7 @@ class _HomeCategoriesWidget extends StatelessWidget {
 
 class _CategoryItem extends StatelessWidget {
   final SupplierCategoryModel _category;
+  final HomeController _controller;
 
   static const categoriesIcons = {
     'P': Icons.pets,
@@ -36,26 +37,37 @@ class _CategoryItem extends StatelessWidget {
     'C': Icons.store_mall_directory,
   };
 
-  const _CategoryItem(this._category);
+  const _CategoryItem(this._category, this._controller);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          CircleAvatar(
-            backgroundColor: context.primaryColorLight,
-            radius: 30,
-            child: Icon(
-              categoriesIcons[_category.type],
-              size: 30,
-              color: Colors.black,
+    return InkWell(
+      onTap: () {
+        _controller.filterSupplierCategory(_category);
+      },
+      child: Container(
+        margin: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Observer(
+              builder: (_) {
+                return CircleAvatar(
+                  backgroundColor: _controller.supplierCategoryFilterSelected?.id == _category.id
+                      ? context.primaryColor
+                      : context.primaryColorLight,
+                  radius: 30,
+                  child: Icon(
+                    categoriesIcons[_category.type],
+                    size: 30,
+                    color: Colors.black,
+                  ),
+                );
+              },
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(_category.name),
-        ],
+            const SizedBox(height: 10),
+            Text(_category.name),
+          ],
+        ),
       ),
     );
   }

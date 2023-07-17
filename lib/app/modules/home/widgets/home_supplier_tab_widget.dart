@@ -16,8 +16,8 @@ class _HomeSupplierTab extends StatelessWidget {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
                 child: controller.supplierPageTypeSelected == SupplierPageType.list
-                    ? const _HomeSupplierList()
-                    : const _HomeSupplierGrid(),
+                    ? _HomeSupplierList(controller)
+                    : _HomeSupplierGrid(controller),
               );
             },
           ),
@@ -66,36 +66,35 @@ class _HomeTabHeader extends StatelessWidget {
 }
 
 class _HomeSupplierList extends StatelessWidget {
-  const _HomeSupplierList();
+  final HomeController controller;
+
+  const _HomeSupplierList(this.controller);
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            childCount: 10,
-            (context, index) {
-              return const _HomeSupplierListItemWidget();
-            },
-          ),
+        Observer(
+          builder: (_) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                childCount: controller.listSuppliersByAddress.length,
+                (context, index) {
+                  return _HomeSupplierListItemWidget(controller.listSuppliersByAddress[index]);
+                },
+              ),
+            );
+          },
         ),
       ],
     );
   }
 }
 
-class _HomeSupplierGrid extends StatelessWidget {
-  const _HomeSupplierGrid();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('Supplier Grid');
-  }
-}
-
 class _HomeSupplierListItemWidget extends StatelessWidget {
-  const _HomeSupplierListItemWidget();
+  final SupplierNearByMeModel supplier;
+
+  const _HomeSupplierListItemWidget(this.supplier);
 
   @override
   Widget build(BuildContext context) {
@@ -116,16 +115,16 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(left: 50),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Clinica Central ABC', overflow: TextOverflow.ellipsis),
-                        SizedBox(height: 10),
+                        Text(supplier.name, overflow: TextOverflow.ellipsis),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(Icons.location_on),
-                            Text('2.84km de distância'),
+                            const Icon(Icons.location_on),
+                            Text('${supplier.distance.toStringAsFixed(2)}km de distância'),
                           ],
                         ),
                       ],
@@ -167,9 +166,8 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                   width: 5,
                 ),
                 borderRadius: BorderRadius.circular(100),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcREj22c-wMNL5IDmU99v8G7voUl17Yxm0JJqMLqttdPT4DnaB99zqVK7HWiNzjP3aZnzCEf-ikAqb2yiDk'),
+                image: DecorationImage(
+                  image: NetworkImage(supplier.logo),
                   fit: BoxFit.contain,
                 ),
               ),
@@ -178,5 +176,16 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _HomeSupplierGrid extends StatelessWidget {
+  final HomeController controller;
+
+  const _HomeSupplierGrid(this.controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Supplier Grid');
   }
 }

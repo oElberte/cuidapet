@@ -6,6 +6,7 @@ import '../../core/ui/widgets/loader.dart';
 import '../../core/ui/widgets/messages.dart';
 import '../../entities/address_entity.dart';
 import '../../models/supplier_category_model.dart';
+import '../../models/supplier_near_by_me_model.dart';
 import '../../services/address/address_service.dart';
 import '../../services/supplier/supplier_service.dart';
 
@@ -31,6 +32,11 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   @readonly
   var _supplierPageTypeSelected = SupplierPageType.list;
 
+  @readonly
+  var _listSuppliersByAddress = <SupplierNearByMeModel>[];
+
+  late ReactionDisposer nearByReactionDisposer;
+
   HomeControllerBase({
     required AddressService addressService,
     required SupplierService supplierService,
@@ -38,17 +44,26 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
         _supplierService = supplierService;
 
   @override
+  void onInit([Map<String, dynamic>? params]) {
+    nearByReactionDisposer = reaction((_) => _addressEntity, (address) {
+      _getNearBy();
+     });
+  }
+
+  @override
   Future<void> onReady() async {
     try {
       Loader.show();
       await _getAddressSelected();
       await _getCategories();
-      if (_addressEntity != null) {
-        await _supplierService.findNearBy(_addressEntity!);
-      }
     } finally {
       Loader.hide();
     }
+  }
+
+  @override
+  void dispose() {
+    nearByReactionDisposer();
   }
 
   @action
@@ -76,6 +91,21 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
       _categories = [...categories];
     } catch (e) {
       Messages.alert('Erro ao buscar as categorias');
+      throw Exception();
+    }
+  }
+
+  @action
+  Future<void> _getNearBy() async {
+    try {
+      if (_addressEntity != null) {
+        final suppliers = await _supplierService.findNearBy(_addressEntity!);
+        _listSuppliersByAddress = [...suppliers];
+      } else {
+        Messages.alert('Para realizar a busca por petshops, você precisa selecionar um endereço');
+      }
+    } catch (e) {
+      Messages.alert('Erro ao buscar as petshops');
       throw Exception();
     }
   }

@@ -1,4 +1,6 @@
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/life_cycle/controller_life_cycle.dart';
 import '../../core/logger/app_logger.dart';
@@ -90,4 +92,26 @@ abstract class SupplierControllerBase with Store, ControllerLifeCycle {
 
   String get totalServicesSelected =>
       'Serviços (${_selectedServices.length} selecionado${_selectedServices.length > 1 ? 's' : ''})';
+
+  Future<void> goToPhoneOrCopyPhoneToClipboard() async {
+    final phoneUrl = 'tel:${_supplier?.phone}';
+
+    if (await canLaunchUrlString(phoneUrl)) {
+      await launchUrlString(phoneUrl);
+    } else {
+      await Clipboard.setData(ClipboardData(text: _supplier?.phone ?? ''));
+      Messages.info('Telefone copiado para área de transferência');
+    }
+  }
+
+  Future<void> goToGeoOrCopyAddressToClipboard() async {
+    final geoUrl = 'geo:${_supplier?.lat}, ${_supplier?.lng}';
+
+    if (await canLaunchUrlString(geoUrl)) {
+      await launchUrlString(geoUrl);
+    } else {
+      await Clipboard.setData(ClipboardData(text: _supplier?.address ?? ''));
+      Messages.info('Endereço copiado para área de transferência');
+    }
+  }
 }

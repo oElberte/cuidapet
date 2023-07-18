@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../core/ui/extensions/theme_extension.dart';
 import '../../../models/supplier_model.dart';
+import '../supplier_controller.dart';
 
 class SupplierDetailsWidget extends StatelessWidget {
   final SupplierModel supplier;
-  const SupplierDetailsWidget(this.supplier, {super.key});
+  final SupplierController controller;
+
+  const SupplierDetailsWidget({required this.supplier, required this.controller, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +35,12 @@ class SupplierDetailsWidget extends StatelessWidget {
           ),
         ),
         ListTile(
+          onTap: () => controller.goToGeoOrCopyAddressToClipboard(),
           leading: const Icon(Icons.location_city, color: Colors.black),
           title: Text(supplier.address),
         ),
         ListTile(
+          onTap: () => controller.goToPhoneOrCopyPhoneToClipboard(),
           leading: const Icon(Icons.local_phone, color: Colors.black),
           title: Text(supplier.phone),
         ),

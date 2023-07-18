@@ -102,7 +102,10 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
                 ),
               ),
               SliverToBoxAdapter(
-                child: SupplierDetailsWidget(supplier),
+                child: SupplierDetailsWidget(
+                  supplier: supplier,
+                  controller: controller,
+                ),
               ),
               SliverToBoxAdapter(
                 child: Padding(

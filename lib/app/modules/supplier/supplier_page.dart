@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 
+import '../../core/life_cycle/page_life_cycle_state.dart';
 import '../../core/ui/extensions/theme_extension.dart';
+import 'supplier_controller.dart';
 import 'widgets/supplier_details_widget.dart';
 import 'widgets/supplier_service_widget.dart';
 
 class SupplierPage extends StatefulWidget {
-  const SupplierPage({super.key});
+  final int _supplierId;
+
+  const SupplierPage({super.key, required int supplierId}) : _supplierId = supplierId;
 
   @override
   State<SupplierPage> createState() => _SupplierPageState();
 }
 
-class _SupplierPageState extends State<SupplierPage> {
+class _SupplierPageState extends PageLifeCycleState<SupplierController, SupplierPage> {
   late ScrollController _scrollController;
   final sliverCollapsedVN = ValueNotifier(false);
+
+  @override
+  Map<String, dynamic>? get params => {'supplierId': widget._supplierId};
 
   @override
   void initState() {

@@ -11,13 +11,13 @@ import '../../models/supplier_services_model.dart';
 
 class SupplierRepositoryImpl extends SupplierRepository {
   final RestClient _restClient;
-  final AppLogger _logger;
+  final AppLogger _log;
 
   SupplierRepositoryImpl({
     required RestClient restClient,
     required AppLogger logger,
   })  : _restClient = restClient,
-        _logger = logger;
+        _log = logger;
 
   @override
   Future<List<SupplierCategoryModel>> getCategories() async {
@@ -30,7 +30,7 @@ class SupplierRepositoryImpl extends SupplierRepository {
           .toList();
     } on RestClientException catch (e, s) {
       const errorMessage = 'Erro ao buscar categorias dos fornecedores';
-      _logger.error(errorMessage, e, s);
+      _log.error(errorMessage, e, s);
       throw Failure(message: errorMessage);
     }
   }
@@ -49,7 +49,7 @@ class SupplierRepositoryImpl extends SupplierRepository {
           .toList();
     } on RestClientException catch (e, s) {
       const message = 'Erro ao buscar fornecedores próximos';
-      _logger.error(message, e, s);
+      _log.error(message, e, s);
       throw Failure(message: message);
     }
   }
@@ -61,7 +61,7 @@ class SupplierRepositoryImpl extends SupplierRepository {
       return SupplierModel.fromMap(result.data);
     } on RestClientException catch (e, s) {
       const message = 'Erro ao buscar dados do fornecedor por id';
-      _logger.error(message, e, s);
+      _log.error(message, e, s);
       throw Failure(message: message);
     }
   }
@@ -74,7 +74,7 @@ class SupplierRepositoryImpl extends SupplierRepository {
           <SupplierServicesModel>[];
     } on RestClientException catch (e, s) {
       const message = 'Erro ao buscar dados do serviços do fornecedor';
-      _logger.error(message, e, s);
+      _log.error(message, e, s);
       throw Failure(message: message);
     }
   }

@@ -1,3 +1,5 @@
+import '../../models/supplier_model.dart';
+import '../../models/supplier_services_model.dart';
 import './supplier_service.dart';
 import '../../entities/address_entity.dart';
 import '../../models/supplier_category_model.dart';
@@ -16,4 +18,10 @@ class SupplierServiceImpl extends SupplierService {
 
   @override
   Future<List<SupplierNearByMeModel>> findNearBy(AddressEntity address) async => _repository.findNearBy(address);
+
+  @override
+  Future<SupplierModel> findById(int id) async => _repository.findById(id);
+
+  @override
+  Future<List<SupplierServicesModel>> findServices(int supplierId) async => _repository.findServices(supplierId);
 }

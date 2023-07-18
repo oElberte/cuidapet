@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -9,6 +10,7 @@ import '../../core/ui/widgets/messages.dart';
 import '../../models/supplier_model.dart';
 import '../../models/supplier_services_model.dart';
 import '../../services/supplier/supplier_service.dart';
+import '../schedules/model/schedule_view_model.dart';
 
 part 'supplier_controller.g.dart';
 
@@ -113,5 +115,15 @@ abstract class SupplierControllerBase with Store, ControllerLifeCycle {
       await Clipboard.setData(ClipboardData(text: _supplier?.address ?? ''));
       Messages.info('Endereço copiado para área de transferência');
     }
+  }
+
+  void goToSchedule() {
+    Modular.to.pushNamed(
+      '/schedules/',
+      arguments: ScheduleViewModel(
+        supplierId: _supplierId,
+        services: _selectedServices.toList(),
+      ),
+    );
   }
 }

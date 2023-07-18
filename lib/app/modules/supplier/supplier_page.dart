@@ -55,7 +55,7 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
               label: const Text('Fazer agendamento'),
               onPressed: () {
                 if (controller.selectedServices.isNotEmpty) {
-                  //Do something
+                  controller.goToSchedule();
                 }
               },
               backgroundColor: context.primaryColor,

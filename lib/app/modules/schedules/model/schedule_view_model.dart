@@ -1,0 +1,12 @@
+
+import '../../../models/supplier_services_model.dart';
+
+class ScheduleViewModel {
+  final int supplierId;
+  final List<SupplierServicesModel> services;
+  
+  const ScheduleViewModel({
+    required this.supplierId,
+    required this.services,
+  });
+}

@@ -45,11 +45,23 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.schedule),
-        label: const Text('Fazer agendamento'),
-        onPressed: () {},
-        backgroundColor: context.primaryColor,
+      floatingActionButton: Observer(
+        builder: (_) {
+          return AnimatedOpacity(
+            opacity: controller.selectedServices.isNotEmpty ? 1 : 0,
+            duration: const Duration(milliseconds: 300),
+            child: FloatingActionButton.extended(
+              icon: const Icon(Icons.schedule),
+              label: const Text('Fazer agendamento'),
+              onPressed: () {
+                if (controller.selectedServices.isNotEmpty) {
+                  //Do something
+                }
+              },
+              backgroundColor: context.primaryColor,
+            ),
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Observer(
@@ -92,12 +104,12 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
               SliverToBoxAdapter(
                 child: SupplierDetailsWidget(supplier),
               ),
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Serviços (0 selecionados)',
-                    style: TextStyle(
+                    controller.totalServicesSelected,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                     ),
@@ -108,7 +120,10 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
                 delegate: SliverChildBuilderDelegate(
                   childCount: controller.supplierServices.length,
                   (context, index) {
-                    return SupplierServiceWidget(controller.supplierServices[index]);
+                    return SupplierServiceWidget(
+                      service: controller.supplierServices[index],
+                      controller: controller,
+                    );
                   },
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../core/life_cycle/page_life_cycle_state.dart';
 import '../../core/ui/extensions/theme_extension.dart';
@@ -51,57 +52,69 @@ class _SupplierPageState extends PageLifeCycleState<SupplierController, Supplier
         backgroundColor: context.primaryColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 200,
-            pinned: true,
-            title: ValueListenableBuilder(
-              valueListenable: sliverCollapsedVN,
-              builder: (_, sliverCollapsedVNValue, child) {
-                return Visibility(
-                  visible: sliverCollapsedVNValue,
-                  child: const Text('Clinica Central ABC'),
-                );
-              },
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              stretchModes: const [
-                StretchMode.zoomBackground,
-                StretchMode.fadeTitle,
-              ],
-              background: Image.network(
-                'https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcREj22c-wMNL5IDmU99v8G7voUl17Yxm0JJqMLqttdPT4DnaB99zqVK7HWiNzjP3aZnzCEf-ikAqb2yiDk',
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
-              ),
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: SupplierDetailsWidget(),
-          ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Serviços (0 selecionados)',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
+      body: Observer(
+        builder: (_) {
+          final supplier = controller.supplier;
+
+          if (supplier == null) {
+            return const Center(
+              child: Text('Buscando dados do fornecedor'),
+            );
+          }
+
+          return CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverAppBar(
+                expandedHeight: 200,
+                pinned: true,
+                title: ValueListenableBuilder(
+                  valueListenable: sliverCollapsedVN,
+                  builder: (_, sliverCollapsedVNValue, child) {
+                    return Visibility(
+                      visible: sliverCollapsedVNValue,
+                      child: Text(supplier.name),
+                    );
+                  },
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  stretchModes: const [
+                    StretchMode.zoomBackground,
+                    StretchMode.fadeTitle,
+                  ],
+                  background: Image.network(
+                    supplier.logo,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                  ),
                 ),
               ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              childCount: 200,
-              (context, index) {
-                return const SupplierServiceWidget();
-              },
-            ),
-          ),
-        ],
+              SliverToBoxAdapter(
+                child: SupplierDetailsWidget(supplier),
+              ),
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Serviços (0 selecionados)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: controller.supplierServices.length,
+                  (context, index) {
+                    return SupplierServiceWidget(controller.supplierServices[index]);
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

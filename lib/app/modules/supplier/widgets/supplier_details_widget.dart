@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/ui/extensions/theme_extension.dart';
+import '../../../models/supplier_model.dart';
 
 class SupplierDetailsWidget extends StatelessWidget {
-  const SupplierDetailsWidget({super.key});
+  final SupplierModel supplier;
+  const SupplierDetailsWidget(this.supplier, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class SupplierDetailsWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
           child: Center(
             child: Text(
-              'Clinica Central ABC',
+              supplier.name,
               style: context.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -29,13 +31,13 @@ class SupplierDetailsWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        const ListTile(
-          leading: Icon(Icons.location_city, color: Colors.black),
-          title: Text('Av. Paulista 2000'),
+        ListTile(
+          leading: const Icon(Icons.location_city, color: Colors.black),
+          title: Text(supplier.address),
         ),
-        const ListTile(
-          leading: Icon(Icons.local_phone, color: Colors.black),
-          title: Text('11999999999'),
+        ListTile(
+          leading: const Icon(Icons.local_phone, color: Colors.black),
+          title: Text(supplier.phone),
         ),
         Divider(thickness: 1, color: context.primaryColor),
       ],

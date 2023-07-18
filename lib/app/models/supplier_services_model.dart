@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-
 class SupplierServicesModel {
   final int id;
   final int supplierId;
   final String name;
   final double price;
-  
+
   SupplierServicesModel({
     required this.id,
     required this.supplierId,

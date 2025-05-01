@@ -89,3 +89,15 @@ lib/
 ## 🔐 Security
 
 This app implements secure authentication using Firebase Authentication and secure storage for sensitive data.
+
+## 📸 Screenshots
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: flex-start;">
+    <img src="screenshots/1.jpg" width="200" alt="Sigin Page">
+    <img src="screenshots/2.jpg" width="200" alt="Signup Page">
+    <img src="screenshots/3.jpg" width="200" alt="Select Address Page">
+    <img src="screenshots/4.jpg" width="200" alt="Confirm Address on Map Page">
+    <img src="screenshots/5.jpg" width="200" alt="List Petshops Page">
+    <img src="screenshots/6.jpg" width="200" alt="Grid Petshops Page">
+    <img src="screenshots/7.jpg" width="200" alt="Petshop Details Page">
+</div>
